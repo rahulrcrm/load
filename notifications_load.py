@@ -193,8 +193,9 @@ def process_csv_parallel(csv_file_path, endpoints):
             accounts = list(reader)  # Load all accounts into memory
 
         # Use ThreadPoolExecutor to process accounts in parallel
-        with ThreadPoolExecutor(max_workers=60) as executor:
+        with ThreadPoolExecutor(max_workers=70) as executor:
             for account in accounts:
+                time.sleep(5)
                 executor.submit(process_account, account, endpoints)
 
     except FileNotFoundError:
