@@ -2,6 +2,7 @@ import csv
 import requests
 import time, sys, os, random
 from concurrent.futures import ThreadPoolExecutor
+import datetime
 
 # Specify the file path of the CSV
 csv_file_path = "source.csv"
@@ -155,14 +156,17 @@ def hit_endpoint(endpoint, payload, token, apiToken, row):
             print(f"Unsupported HTTP method: {endpoint['method']}")
             return
 
-        print(f"Request to {url} with payload {payload}: {response.status_code}")
+        # Generate timestamp
+        current_time = datetime.datetime.now()
+        print(f"[{current_time}] For user {row['username']} Request to {url} with payload {payload}: {response.status_code}")
 
         # Store response data if required
         if endpoint.get("store_response"):
             response_data = response.json()
             row["slug"] = response_data["data"]["candidate"]["slug"]
     except Exception as e:
-        print(f"Error for endpoint {url} with payload {payload}: {e}")
+        current_time = datetime.datetime.now()
+        print(f"[{current_time}] Error for endpoint {url} : {e}")
         print(e)
 
 
@@ -176,7 +180,8 @@ def process_account(row, endpoints):
         # Generate payload and hit the endpoint
         payload = endpoint["payload"](row)
         hit_endpoint(endpoint, payload, row.get("getToken"), row.get("apiToken"), row)
-    print(f"Completed processing for account {row.get('id')}.")
+    current_time = datetime.datetime.now()
+    print(f"[{current_time}] Completed processing for account {row.get('id')}.")
 
 
 # Main function to read CSV and start processing accounts in parallel
