@@ -149,9 +149,9 @@ def hit_endpoint(endpoint, payload, token, apiToken, row):
 
     try:
         if endpoint["method"] == "POST":
-            response = requests.post(url, json=payload, headers=headers, timeout=5)
+            response = requests.post(url, json=payload, headers=headers, timeout=65)
         elif endpoint["method"] == "GET":
-            response = requests.get(url, params=payload, headers=headers, timeout=5)
+            response = requests.get(url, params=payload, headers=headers, timeout=65)
         else:
             print(f"Unsupported HTTP method: {endpoint['method']}")
             return
